@@ -1,9 +1,9 @@
-import { IsDecimal, IsInt, IsString } from 'class-validator';
+import { IsNumber, IsString } from "class-validator";
 
 export class CreateOfferDto {
   @IsString()
   name: string;
 
-  @IsDecimal()
+  @IsNumber({}, { message: "Price must be a valid number." })
   price: number;
 }

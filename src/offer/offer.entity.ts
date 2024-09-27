@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Offer {
@@ -8,6 +8,6 @@ export class Offer {
   @Column()
   name: string;
 
-  @Column('decimal')
+  @Column("decimal", { precision: 10, scale: 2 })
   price: number;
 }

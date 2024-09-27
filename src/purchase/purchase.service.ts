@@ -38,23 +38,21 @@ export class PurchaseService {
     const purchase = this.purchaseRepository.create({ user, offer });
     await this.purchaseRepository.save(purchase);
 
-    // // Send event to analytics service
-    // await firstValueFrom(
-    //   this.httpService.post('http://analytics.service/purchase', {
-    //     userId,
-    //     offerId,
-    //   }),
-    // );
+    await firstValueFrom(
+      this.httpService.post('http://analytics.service/purchase', {
+        userId,
+        offerId,
+      }),
+    );
 
-    // // Schedule astrological report
-    // setTimeout(
-    //   () => {
-    //     this.httpService
-    //       .post('http://astrology.service/report', { userId })
-    //       .subscribe();
-    //   },
-    //   24 * 60 * 60 * 1000,
-    // ); // 24 hours in milliseconds
+    setTimeout(
+      () => {
+        this.httpService
+          .post('http://astrology.service/report', { userId })
+          .subscribe();
+      },
+      24 * 60 * 60 * 1000,
+    );
 
     return purchase;
   }

@@ -1,10 +1,9 @@
-import { IsEmail, IsOptional, IsObject } from 'class-validator';
+import { IsEmail, IsObject } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
   email: string;
 
-  @IsOptional()
   @IsObject()
-  marketingData?: Record<string, any>;
+  marketingData: Record<string, any>;
 }

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Index } from "typeorm";
 
 @Entity()
 export class User {
@@ -9,6 +9,6 @@ export class User {
   @Index({ unique: true })
   email: string;
 
-  @Column('json', { nullable: true })
-  marketingData?: Record<string, any>;
+  @Column("json")
+  marketingData: Record<string, any>;
 }

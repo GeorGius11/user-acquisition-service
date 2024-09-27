@@ -1,9 +1,9 @@
-import { IsInt, IsString } from 'class-validator';
+import { IsDecimal, IsInt, IsString } from 'class-validator';
 
 export class CreateOfferDto {
   @IsString()
   name: string;
 
-  @IsInt()
+  @IsDecimal()
   price: number;
 }

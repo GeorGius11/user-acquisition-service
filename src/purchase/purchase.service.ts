@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Purchase } from './purchase.entity';
@@ -22,10 +22,18 @@ export class PurchaseService {
     createPurchaseDto: CreatePurchaseDto,
   ): Promise<Purchase> {
     const { userId, offerId } = createPurchaseDto;
+
     const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found.`);
+    }
+
     const offer = await this.offerRepository.findOne({
       where: { id: offerId },
     });
+    if (!offer) {
+      throw new NotFoundException(`Offer with ID ${offerId} not found.`);
+    }
 
     const purchase = this.purchaseRepository.create({ user, offer });
     await this.purchaseRepository.save(purchase);

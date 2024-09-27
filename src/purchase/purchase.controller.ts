@@ -7,7 +7,7 @@ export class PurchaseController {
   constructor(private readonly purchaseService: PurchaseService) {}
 
   @Post()
-  createPurchase(@Body() createPurchaseDto: CreatePurchaseDto) {
-    return this.purchaseService.createPurchase(createPurchaseDto);
+  async createPurchase(@Body() createPurchaseDto: CreatePurchaseDto) {
+    return await this.purchaseService.createPurchase(createPurchaseDto);
   }
 }

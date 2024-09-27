@@ -61,7 +61,9 @@ export class PurchaseService {
 
     setTimeout(
       () => {
-        this.httpService.post(this.astrologyServiceUrl, { userId }).subscribe();
+        this.httpService
+          .post(this.astrologyServiceUrl, 'Astrological report')
+          .subscribe();
       },
       24 * 60 * 60 * 1000,
     );

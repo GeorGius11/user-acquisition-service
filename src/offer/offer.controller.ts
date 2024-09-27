@@ -1,5 +1,6 @@
 import { Body, Controller, Get, ParseIntPipe, Post } from '@nestjs/common';
 import { OfferService } from './offer.service';
+import { CreateOfferDto } from './dto/create-offer.dto';
 
 @Controller('offers')
 export class OfferController {
@@ -11,12 +12,7 @@ export class OfferController {
   }
 
   @Post()
-  createOffer(
-    @Body('name') name: string,
-    @Body('price', ParseIntPipe) price: number,
-  ) {
-    console.log(name);
-    console.log(price);
-    return this.offerService.createOffer(name, price);
+  createOffer(@Body() createOfferDto: CreateOfferDto) {
+    return this.offerService.createOffer(createOfferDto);
   }
 }

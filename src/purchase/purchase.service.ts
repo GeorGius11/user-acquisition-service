@@ -6,6 +6,7 @@ import { User } from '../user/user.entity';
 import { Offer } from '../offer/offer.entity';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { CreatePurchaseDto } from './dto/create-purchase.dto';
 
 @Injectable()
 export class PurchaseService {
@@ -17,7 +18,10 @@ export class PurchaseService {
     private httpService: HttpService,
   ) {}
 
-  async createPurchase(userId: number, offerId: number): Promise<Purchase> {
+  async createPurchase(
+    createPurchaseDto: CreatePurchaseDto,
+  ): Promise<Purchase> {
+    const { userId, offerId } = createPurchaseDto;
     const user = await this.userRepository.findOne({ where: { id: userId } });
     const offer = await this.offerRepository.findOne({
       where: { id: offerId },

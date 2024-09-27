@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Offer } from './offer.entity';
+import { CreateOfferDto } from './dto/create-offer.dto';
 
 @Injectable()
 export class OfferService {
@@ -13,8 +14,8 @@ export class OfferService {
     return this.offerRepository.find();
   }
 
-  createOffer(name: string, price: number): Promise<Offer> {
-    const offer = this.offerRepository.create({ name, price });
+  createOffer(createOfferDto: CreateOfferDto): Promise<Offer> {
+    const offer = this.offerRepository.create(createOfferDto);
     return this.offerRepository.save(offer);
   }
 }

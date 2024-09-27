@@ -7,16 +7,30 @@ import { Offer } from '../offer/offer.entity';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PurchaseService {
+  private analyticsServiceUrl: string;
+  private astrologyServiceUrl: string;
+
   constructor(
     @InjectRepository(Purchase)
     private purchaseRepository: Repository<Purchase>,
-    @InjectRepository(User) private userRepository: Repository<User>,
-    @InjectRepository(Offer) private offerRepository: Repository<Offer>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(Offer)
+    private offerRepository: Repository<Offer>,
     private httpService: HttpService,
-  ) {}
+    private configService: ConfigService,
+  ) {
+    this.analyticsServiceUrl = this.configService.get<string>(
+      'ANALYTICS_SERVICE_URL',
+    );
+    this.astrologyServiceUrl = this.configService.get<string>(
+      'ASTROLOGY_SERVICE_URL',
+    );
+  }
 
   async createPurchase(
     createPurchaseDto: CreatePurchaseDto,
@@ -39,7 +53,7 @@ export class PurchaseService {
     await this.purchaseRepository.save(purchase);
 
     await firstValueFrom(
-      this.httpService.post('http://analytics.service/purchase', {
+      this.httpService.post(this.analyticsServiceUrl, {
         userId,
         offerId,
       }),
@@ -47,9 +61,7 @@ export class PurchaseService {
 
     setTimeout(
       () => {
-        this.httpService
-          .post('http://astrology.service/report', { userId })
-          .subscribe();
+        this.httpService.post(this.astrologyServiceUrl, { userId }).subscribe();
       },
       24 * 60 * 60 * 1000,
     );
